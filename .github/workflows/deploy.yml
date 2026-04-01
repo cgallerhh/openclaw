@@ -14,10 +14,10 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HETZNER_HOST }}
-          username: openclaw
+          username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
           script: |
-            cd ~/openclaw
+            cd /home/user/openclaw
             git pull origin main
             docker compose up -d --build
             docker compose ps
