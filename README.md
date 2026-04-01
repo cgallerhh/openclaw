@@ -1,6 +1,6 @@
 # openclaw
 
-OpenClaw Gateway deployed on Hetzner via Docker + GitHub Actions CI/CD.
+OpenClaw Gateway auf Hetzner, deployed via Docker + GitHub Actions CI/CD.
 
 ## Flow
 
@@ -8,38 +8,59 @@ OpenClaw Gateway deployed on Hetzner via Docker + GitHub Actions CI/CD.
 Mac: git push → GitHub Actions → SSH → Hetzner VPS → docker compose up -d --build
 ```
 
-## Server Setup (einmalig als root)
+## Einmaliges Server-Setup
 
 ```bash
-ssh root@DEINE-SERVER-IP
-bash <(curl -fsSL https://raw.githubusercontent.com/cgallerhh/openclaw/main/setup-server.sh)
+ssh root@89.167.14.159
+git clone https://github.com/cgallerhh/openclaw.git /home/user/openclaw
+cd /home/user/openclaw
+git checkout main
 ```
 
-Das Skript:
-- Installiert Docker
-- Legt User `openclaw` an
-- Generiert SSH-Key für GitHub Actions
-- Klont dieses Repository
-- Erstellt `.env` Datei
+`.env` anlegen:
+```bash
+nano .env
+```
+```
+ANTHROPIC_API_KEY=sk-ant-...
+TELEGRAM_API_KEY=<bot-token von @penclaw_ChG_BOT>
+TELEGRAM_CHAT_ID=<deine-telegram-id>
+```
 
-## GitHub Secrets einrichten
+Starten:
+```bash
+docker compose up -d --build
+```
+
+Telegram-Bot verbinden:
+```bash
+docker exec -it openclaw-openclaw-1 sh -c 'openclaw channels add --channel telegram --token "$TELEGRAM_API_KEY"'
+```
+
+## GitHub Secrets
 
 | Secret | Wert |
 |---|---|
-| `HETZNER_HOST` | IP-Adresse des Hetzner Servers |
-| `HETZNER_SSH_KEY` | Private Key aus `setup-server.sh` Output |
-| `ANTHROPIC_API_KEY` | Dein Anthropic API Key |
+| `HETZNER_HOST` | `89.167.14.159` |
+| `HETZNER_SSH_KEY` | Private Key (`/root/.ssh/github_actions`) |
+| `ANTHROPIC_API_KEY` | Anthropic API Key |
+| `TELEGRAM_API_KEY` | Telegram Bot Token (@penclaw_ChG_BOT) |
+| `TELEGRAM_CHAT_ID` | Deine Telegram User ID |
 
-## Manueller Start
+## Docker Befehle
 
 ```bash
-ssh openclaw@DEINE-SERVER-IP
-cd ~/openclaw
-cp .env.example .env   # API Key eintragen
-docker compose up -d
-docker compose logs -f
+docker compose ps          # Status
+docker compose logs -f     # Live-Logs
+docker compose restart     # Neustart
+docker compose up -d --build  # Nach Code-Änderungen
 ```
 
 ## Gateway
 
-OpenClaw läuft auf `127.0.0.1:18789` (nur lokal, kein öffentlicher Zugriff ohne Nginx/TLS).
+Läuft auf `ws://127.0.0.1:18789` mit `claude-opus-4-6`.
+
+## Bot
+
+Telegram: @penclaw_ChG_BOT
+Morgen-Briefing: täglich 6:30 Uhr (Hamburger Zeit) mit Wetter, Kalender, Tagesschau.

@@ -6,10 +6,6 @@
   },
   "model": {
     "provider": "anthropic",
-    "model": "claude-sonnet-4-20250514"
-  },
-  "telegram": {
-    "token": "${TELEGRAM_API_KEY}",
-    "chatId": "${TELEGRAM_CHAT_ID}"
+    "model": "claude-opus-4-6"
   }
 }
