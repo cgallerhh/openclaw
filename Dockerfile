@@ -2,7 +2,7 @@ FROM node:24-alpine
 
 RUN npm install -g openclaw@latest && \
     cd /usr/local/lib/node_modules/openclaw && \
-    npm install grammy @aws-sdk/client-bedrock --no-save
+    npm install grammy @grammyjs/runner @aws-sdk/client-bedrock --no-save
 
 WORKDIR /app
 COPY openclaw.config.json .
