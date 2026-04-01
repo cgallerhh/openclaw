@@ -7,4 +7,6 @@ COPY openclaw.config.json .
 
 EXPOSE 18789
 
-CMD ["openclaw", "gateway", "start", "--config", "/app/openclaw.config.json"]
+RUN mkdir -p /root/.openclaw && cp /app/openclaw.config.json /root/.openclaw/config.json
+
+CMD ["openclaw", "gateway", "start"]
