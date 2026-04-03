@@ -64,3 +64,4 @@ Läuft auf `ws://127.0.0.1:18789` mit `claude-opus-4-6`.
 
 Telegram: @penclaw_ChG_BOT
 Morgen-Briefing: täglich 6:30 Uhr (Hamburger Zeit) mit Wetter, Kalender, Tagesschau.
+# Test Fr.  3 Apr. 2026 20:32:00 CEST
