@@ -11,7 +11,7 @@
   "agents": {
     "defaults": {
       "params": {
-        "cacheRetention": "short",
+        "cacheRetention": "none",
         "contextPruning": {
           "mode": "cache-ttl",
           "ttl": "5m",
