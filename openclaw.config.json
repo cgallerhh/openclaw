@@ -7,5 +7,17 @@
   "model": {
     "provider": "anthropic",
     "model": "claude-haiku-4-5-20251001"
+  },
+  "agents": {
+    "defaults": {
+      "params": {
+        "cacheRetention": "short",
+        "contextPruning": {
+          "mode": "cache-ttl",
+          "ttl": "5m",
+          "keepLastAssistants": 3
+        }
+      }
+    }
   }
 }
