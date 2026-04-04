@@ -58,7 +58,17 @@ docker compose up -d --build  # Nach Code-Änderungen
 
 ## Gateway
 
-Läuft auf `ws://127.0.0.1:18789` mit `claude-opus-4-6`.
+Läuft auf `ws://127.0.0.1:18789`.
+
+### Modell-Übersicht & Kosten (pro Million Tokens)
+
+| Modell | Input | Output | Eignung |
+|---|---|---|---|
+| `claude-haiku-4-5-20251001` | ~$0,80 | ~$4 | Einfache Tasks, Routing, Briefings ✅ aktuell |
+| `claude-sonnet-4-6` | ~$3 | ~$15 | Komplexe Coding-Tasks |
+| `claude-opus-4-6` | ~$15 | ~$75 | Sehr komplexe Analysen |
+
+**Modell wechseln:** `openclaw.config.json` → `model.model` anpassen, dann `docker compose up -d --build`.
 
 ## Bot
 
