@@ -11,6 +11,7 @@ EXPOSE 18789
 
 RUN mkdir -p /root/.openclaw
 
-CMD cp /app/openclaw.config.json /root/.openclaw/config.json && \
-    { [ -n "$TELEGRAM_API_KEY" ] && openclaw channels add --channel telegram --token "$TELEGRAM_API_KEY" || true; } && \
-    openclaw gateway --allow-unconfigured
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]
