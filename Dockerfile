@@ -1,6 +1,6 @@
 FROM node:24-alpine
 
-RUN npm install -g openclaw@latest grammy @grammyjs/runner @grammyjs/transformer-throttler @aws-sdk/client-bedrock
+RUN npm install -g openclaw@latest grammy @grammyjs/runner @grammyjs/transformer-throttler
 
 WORKDIR /app
 COPY openclaw.config.json .

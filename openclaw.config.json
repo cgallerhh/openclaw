@@ -5,7 +5,7 @@
     "mode": "local"
   },
   "model": {
-    "provider": "anthropic",
-    "model": "claude-sonnet-4-6"
+    "provider": "openai",
+    "model": "gpt-4o-mini"
   }
 }

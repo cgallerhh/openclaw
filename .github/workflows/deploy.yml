@@ -16,12 +16,12 @@ jobs:
           host: ${{ secrets.HETZNER_HOST }}
           username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
-          envs: ANTHROPIC_API_KEY,TELEGRAM_API_KEY,TELEGRAM_CHAT_ID
+          envs: OPENAI_API_KEY,TELEGRAM_API_KEY,TELEGRAM_CHAT_ID
           script: |
             cd /home/user/openclaw
             git pull origin main
-            printf "ANTHROPIC_API_KEY=%s\nTELEGRAM_API_KEY=%s\nTELEGRAM_CHAT_ID=%s\n" \
-              "$ANTHROPIC_API_KEY" "$TELEGRAM_API_KEY" "$TELEGRAM_CHAT_ID" > .env
+            printf "OPENAI_API_KEY=%s\nTELEGRAM_API_KEY=%s\nTELEGRAM_CHAT_ID=%s\n" \
+              "$OPENAI_API_KEY" "$TELEGRAM_API_KEY" "$TELEGRAM_CHAT_ID" > .env
             chmod 600 .env
             docker compose up -d --build
             docker compose ps

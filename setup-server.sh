@@ -36,9 +36,9 @@ su - openclaw -c "
 "
 
 # 5. Create .env file
-echo "[5/5] Creating .env file (you must fill in ANTHROPIC_API_KEY)..."
+echo "[5/5] Creating .env file (you must fill in OPENAI_API_KEY)..."
 su - openclaw -c "
-  echo 'ANTHROPIC_API_KEY=sk-ant-REPLACE_ME' > ~/openclaw/.env
+  echo 'OPENAI_API_KEY=sk-REPLACE_ME' > ~/openclaw/.env
   chmod 600 ~/openclaw/.env
 "
 
@@ -46,7 +46,7 @@ echo ""
 echo "=== Setup complete! ==="
 echo ""
 echo "Next steps:"
-echo "  1. Fill in your Anthropic API key:"
+echo "  1. Fill in your OpenAI API key:"
 echo "     nano /home/openclaw/openclaw/.env"
 echo ""
 echo "  2. Copy the PRIVATE key below to GitHub Secrets as HETZNER_SSH_KEY:"
