@@ -1,5 +1,7 @@
 FROM node:24-alpine
 
+RUN apk add --no-cache git
+
 RUN npm install -g openclaw@latest grammy @grammyjs/runner @grammyjs/transformer-throttler @aws-sdk/client-bedrock
 
 WORKDIR /app
