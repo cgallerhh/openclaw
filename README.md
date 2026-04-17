@@ -22,7 +22,7 @@ git checkout main
 nano .env
 ```
 ```
-ANTHROPIC_API_KEY=sk-ant-...
+OPENAI_API_KEY=sk-...
 TELEGRAM_API_KEY=<bot-token von @penclaw_ChG_BOT>
 TELEGRAM_CHAT_ID=<deine-telegram-id>
 ```
@@ -43,7 +43,7 @@ docker exec -it openclaw-openclaw-1 sh -c 'openclaw channels add --channel teleg
 |---|---|
 | `HETZNER_HOST` | `89.167.14.159` |
 | `HETZNER_SSH_KEY` | Private Key (`/root/.ssh/github_actions`) |
-| `ANTHROPIC_API_KEY` | Anthropic API Key |
+| `OPENAI_API_KEY` | OpenAI API Key |
 | `TELEGRAM_API_KEY` | Telegram Bot Token (@penclaw_ChG_BOT) |
 | `TELEGRAM_CHAT_ID` | Deine Telegram User ID |
 
@@ -58,7 +58,7 @@ docker compose up -d --build  # Nach Code-Änderungen
 
 ## Gateway
 
-Läuft auf `ws://127.0.0.1:18789` mit `claude-opus-4-6`.
+Läuft auf `ws://127.0.0.1:18789` mit `gpt-4o-mini`.
 
 ## Bot
 
