@@ -11,4 +11,6 @@ EXPOSE 18789
 
 RUN mkdir -p /root/.openclaw
 
-CMD cp /app/openclaw.config.json /root/.openclaw/config.json && openclaw gateway --allow-unconfigured
+CMD cp /app/openclaw.config.json /root/.openclaw/config.json && \
+    if [ -n "$TELEGRAM_API_KEY" ]; then openclaw channels add --channel telegram --token "$TELEGRAM_API_KEY"; fi && \
+    openclaw gateway --allow-unconfigured
