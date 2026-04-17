@@ -7,6 +7,6 @@ COPY openclaw.config.json .
 
 EXPOSE 18789
 
-RUN mkdir -p /root/.openclaw && cp /app/openclaw.config.json /root/.openclaw/config.json
+RUN mkdir -p /root/.openclaw
 
-CMD ["openclaw", "gateway", "--allow-unconfigured"]
+CMD cp /app/openclaw.config.json /root/.openclaw/config.json && openclaw gateway --allow-unconfigured
