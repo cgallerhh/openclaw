@@ -1,11 +1,14 @@
 #!/bin/sh
 set -e
 
-cp /app/openclaw.config.json /root/.openclaw/openclaw.json
-
-if [ -n "$TELEGRAM_API_KEY" ]; then
-  openclaw channels add --channel telegram --token "$TELEGRAM_API_KEY" || \
-    echo "Warning: Telegram channel setup failed"
-fi
+node -e "
+const config = JSON.parse(require('fs').readFileSync('/app/openclaw.config.json', 'utf8'));
+const token = process.env.TELEGRAM_API_KEY;
+if (token) {
+  config.channels = config.channels || {};
+  config.channels.telegram = { enabled: true, botToken: token };
+}
+require('fs').writeFileSync('/root/.openclaw/openclaw.json', JSON.stringify(config, null, 2));
+"
 
 exec openclaw gateway --allow-unconfigured
