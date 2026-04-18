@@ -16,16 +16,24 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TELEGRAM_API_KEY: ${{ secrets.TELEGRAM_API_KEY }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GMAIL_ACCOUNT: ${{ secrets.GMAIL_ACCOUNT }}
+          GMAIL_TOPIC: ${{ secrets.GMAIL_TOPIC }}
+          GMAIL_PUSH_TOKEN: ${{ secrets.GMAIL_PUSH_TOKEN }}
+          GMAIL_HOOK_TOKEN: ${{ secrets.GMAIL_HOOK_TOKEN }}
+          GMAIL_SUBSCRIPTION: ${{ secrets.GMAIL_SUBSCRIPTION }}
+          GOGCLI_CREDENTIALS_JSON: ${{ secrets.GOGCLI_CREDENTIALS_JSON }}
         with:
           host: ${{ secrets.HETZNER_HOST }}
           username: root
           key: ${{ secrets.HETZNER_SSH_KEY }}
-          envs: OPENAI_API_KEY,TELEGRAM_API_KEY,TELEGRAM_CHAT_ID
+          envs: OPENAI_API_KEY,TELEGRAM_API_KEY,TELEGRAM_CHAT_ID,GMAIL_ACCOUNT,GMAIL_TOPIC,GMAIL_PUSH_TOKEN,GMAIL_HOOK_TOKEN,GMAIL_SUBSCRIPTION,GOGCLI_CREDENTIALS_JSON
           script: |
             cd /home/user/openclaw
             git pull origin main
-            printf "OPENAI_API_KEY=%s\nTELEGRAM_API_KEY=%s\nTELEGRAM_CHAT_ID=%s\n" \
-              "$OPENAI_API_KEY" "$TELEGRAM_API_KEY" "$TELEGRAM_CHAT_ID" > .env
+            printf "OPENAI_API_KEY=%s\nTELEGRAM_API_KEY=%s\nTELEGRAM_CHAT_ID=%s\nGMAIL_ACCOUNT=%s\nGMAIL_TOPIC=%s\nGMAIL_PUSH_TOKEN=%s\nGMAIL_HOOK_TOKEN=%s\nGMAIL_SUBSCRIPTION=%s\nGOGCLI_CREDENTIALS_JSON=%s\n" \
+              "$OPENAI_API_KEY" "$TELEGRAM_API_KEY" "$TELEGRAM_CHAT_ID" \
+              "$GMAIL_ACCOUNT" "$GMAIL_TOPIC" "$GMAIL_PUSH_TOKEN" "$GMAIL_HOOK_TOKEN" \
+              "$GMAIL_SUBSCRIPTION" "$GOGCLI_CREDENTIALS_JSON" > .env
             chmod 600 .env
             docker compose up -d --build
             docker compose ps
