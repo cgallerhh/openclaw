@@ -3,8 +3,8 @@ FROM node:24-alpine
 RUN apk add --no-cache git curl
 
 # Install himalaya email CLI (Gmail IMAP/SMTP)
-RUN curl -sSL https://github.com/pimalaya/himalaya/releases/latest/download/himalaya-x86_64-unknown-linux-musl.tar.gz \
-    | tar -xz -C /usr/local/bin/ himalaya \
+RUN curl -sSL https://github.com/pimalaya/himalaya/releases/download/v1.2.0/himalaya.x86_64-linux.tgz \
+    | tar -xz -C /usr/local/bin/ \
     && chmod +x /usr/local/bin/himalaya
 
 RUN npm install -g openclaw@latest grammy @grammyjs/runner @grammyjs/transformer-throttler @aws-sdk/client-bedrock
