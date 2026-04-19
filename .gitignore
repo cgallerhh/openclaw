@@ -2,3 +2,5 @@
 *.secret
 node_modules/
 .openclaw/
+*.tgz
+package/
