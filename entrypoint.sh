@@ -41,4 +41,15 @@ if (telegramToken) {
 fs.writeFileSync('/root/.openclaw/openclaw.json', JSON.stringify(config, null, 2));
 "
 
+# Write user context (location, timezone) for the agent system prompt
+mkdir -p /root/.openclaw/workspace
+cat > /root/.openclaw/workspace/user.md <<'MD'
+# User Context
+
+- Location: Hamburg, Germany
+- Timezone: Europe/Berlin (CET/CEST)
+
+When the user asks about weather, news, sports, or anything location-specific without specifying a place, default to Hamburg, Germany.
+MD
+
 exec openclaw gateway --allow-unconfigured
