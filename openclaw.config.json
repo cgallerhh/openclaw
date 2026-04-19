@@ -12,6 +12,22 @@
       "userTimezone": "Europe/Berlin"
     }
   },
+  "mcp": {
+    "servers": {
+      "github": {
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-github"]
+      },
+      "google-workspace": {
+        "command": "npx",
+        "args": ["-y", "@iflow-mcp/mcp-google-workspace"]
+      },
+      "1password": {
+        "command": "npx",
+        "args": ["-y", "@takescake/1password-mcp"]
+      }
+    }
+  },
   "tools": {
     "profile": "full",
     "web": {
