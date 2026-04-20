@@ -7,7 +7,7 @@ RUN curl -sSL https://github.com/pimalaya/himalaya/releases/download/v1.2.0/hima
     | tar -xz -C /usr/local/bin/ \
     && chmod +x /usr/local/bin/himalaya
 
-RUN npm install -g openclaw@latest grammy @grammyjs/runner @grammyjs/transformer-throttler @aws-sdk/client-bedrock googleapis
+RUN npm install -g openclaw@latest grammy @grammyjs/runner @grammyjs/transformer-throttler @aws-sdk/client-bedrock googleapis mcporter
 
 WORKDIR /app
 COPY openclaw.config.json .
