@@ -28,6 +28,35 @@ message.send.backend.auth.raw = "$GMAIL_APP_PASSWORD"
 TOML
 fi
 
+# Write Google OAuth credentials if provided
+if [ -n "$GOOGLE_CLIENT_ID" ] && [ -n "$GOOGLE_CLIENT_SECRET" ] && [ -n "$GOOGLE_REFRESH_TOKEN" ]; then
+  mkdir -p /root/.config/google-calendar-mcp
+
+  # Credentials file for MCP server (web app format)
+  cat > /root/.openclaw/google-oauth.keys.json <<GCREDS
+{
+  "web": {
+    "client_id": "$GOOGLE_CLIENT_ID",
+    "client_secret": "$GOOGLE_CLIENT_SECRET",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "redirect_uris": ["http://localhost:9823/callback"]
+  }
+}
+GCREDS
+
+  # Pre-populated token file with refresh token (expiry=1 forces refresh on start)
+  cat > /root/.config/google-calendar-mcp/tokens.json <<TOKENS
+{
+  "access_token": "",
+  "refresh_token": "$GOOGLE_REFRESH_TOKEN",
+  "scope": "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/drive",
+  "token_type": "Bearer",
+  "expiry_date": 1
+}
+TOKENS
+fi
+
 node -e "
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('/app/openclaw.config.json', 'utf8'));
@@ -38,21 +67,21 @@ if (telegramToken) {
   config.channels.telegram = { enabled: true, botToken: telegramToken };
 }
 
+const googleClientId = process.env.GOOGLE_CLIENT_ID;
+const googleRefreshToken = process.env.GOOGLE_REFRESH_TOKEN;
+if (googleClientId && googleRefreshToken) {
+  config.mcpServers = config.mcpServers || {};
+  config.mcpServers['google-calendar'] = {
+    command: 'google-calendar-mcp',
+    env: {
+      GOOGLE_OAUTH_CREDENTIALS: '/root/.openclaw/google-oauth.keys.json',
+      GOOGLE_CALENDAR_MCP_TOKEN_PATH: '/root/.config/google-calendar-mcp/tokens.json'
+    }
+  };
+}
+
 fs.writeFileSync('/root/.openclaw/openclaw.json', JSON.stringify(config, null, 2));
 "
-
-# Write Google OAuth credentials if provided
-if [ -n "$GOOGLE_CLIENT_ID" ] && [ -n "$GOOGLE_CLIENT_SECRET" ] && [ -n "$GOOGLE_REFRESH_TOKEN" ]; then
-  mkdir -p /root/.openclaw
-  cat > /root/.openclaw/google-credentials.json <<GCREDS
-{
-  "client_id": "$GOOGLE_CLIENT_ID",
-  "client_secret": "$GOOGLE_CLIENT_SECRET",
-  "refresh_token": "$GOOGLE_REFRESH_TOKEN",
-  "token_uri": "https://oauth2.googleapis.com/token"
-}
-GCREDS
-fi
 
 # Write user context (location, timezone) for the agent system prompt
 mkdir -p /root/.openclaw/workspace
