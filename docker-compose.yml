@@ -14,5 +14,15 @@ services:
     volumes:
       - openclaw-data:/root/.openclaw
 
+  mcp-bridge:
+    image: ghcr.io/freema/openclaw-mcp:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      - OPENCLAW_URL=http://openclaw:18789
+    depends_on:
+      - openclaw
+
 volumes:
   openclaw-data:

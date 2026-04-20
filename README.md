@@ -47,6 +47,36 @@ docker exec -it openclaw-openclaw-1 sh -c 'openclaw channels add --channel teleg
 | `TELEGRAM_API_KEY` | Telegram Bot Token (@penclaw_ChG_BOT) |
 | `TELEGRAM_CHAT_ID` | Deine Telegram User ID |
 
+## MCP-Integration (Claude Code / Claude Desktop)
+
+Der `mcp-bridge` Service läuft auf `http://127.0.0.1:3000` und stellt openclaw als MCP-Server bereit.
+
+**Claude Code** (`.claude/mcp.json` oder via `claude mcp add`):
+```json
+{
+  "mcpServers": {
+    "openclaw": {
+      "type": "sse",
+      "url": "http://127.0.0.1:3000/sse"
+    }
+  }
+}
+```
+
+**Claude Desktop** (`claude_desktop_config.json`):
+```json
+{
+  "mcpServers": {
+    "openclaw": {
+      "type": "sse",
+      "url": "http://127.0.0.1:3000/sse"
+    }
+  }
+}
+```
+
+> Der MCP-Bridge-Port ist nur lokal erreichbar (`127.0.0.1:3000`). Für Remotezugriff SSH-Tunnel nutzen: `ssh -L 3000:127.0.0.1:3000 root@89.167.14.159`
+
 ## Docker Befehle
 
 ```bash
