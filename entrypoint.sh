@@ -41,6 +41,19 @@ if (telegramToken) {
 fs.writeFileSync('/root/.openclaw/openclaw.json', JSON.stringify(config, null, 2));
 "
 
+# Write Google OAuth credentials if provided
+if [ -n "$GOOGLE_CLIENT_ID" ] && [ -n "$GOOGLE_CLIENT_SECRET" ] && [ -n "$GOOGLE_REFRESH_TOKEN" ]; then
+  mkdir -p /root/.openclaw
+  cat > /root/.openclaw/google-credentials.json <<GCREDS
+{
+  "client_id": "$GOOGLE_CLIENT_ID",
+  "client_secret": "$GOOGLE_CLIENT_SECRET",
+  "refresh_token": "$GOOGLE_REFRESH_TOKEN",
+  "token_uri": "https://oauth2.googleapis.com/token"
+}
+GCREDS
+fi
+
 # Write user context (location, timezone) for the agent system prompt
 mkdir -p /root/.openclaw/workspace
 cat > /root/.openclaw/workspace/user.md <<'MD'
