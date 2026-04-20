@@ -1,53 +1,27 @@
 #!/bin/sh
 set -e
 
-# Write himalaya config for Gmail if credentials are provided
-if [ -n "$GMAIL_USER" ] && [ -n "$GMAIL_APP_PASSWORD" ]; then
-  mkdir -p /root/.config/himalaya
-  cat > /root/.config/himalaya/config.toml <<TOML
-[accounts.gmail]
-email = "$GMAIL_USER"
-display-name = "OpenClaw"
-default = true
-
-backend.type = "imap"
-backend.host = "imap.gmail.com"
-backend.port = 993
-backend.encryption.type = "tls"
-backend.login = "$GMAIL_USER"
-backend.auth.type = "password"
-backend.auth.raw = "$GMAIL_APP_PASSWORD"
-
-message.send.backend.type = "smtp"
-message.send.backend.host = "smtp.gmail.com"
-message.send.backend.port = 587
-message.send.backend.encryption.type = "start-tls"
-message.send.backend.login = "$GMAIL_USER"
-message.send.backend.auth.type = "password"
-message.send.backend.auth.raw = "$GMAIL_APP_PASSWORD"
-TOML
-fi
-
-# Write mcporter config for Google Calendar MCP server if Google credentials are provided
+# Google Workspace plugin credentials (Gmail, Calendar, Drive, ...)
 if [ -n "$GOOGLE_CLIENT_ID" ] && [ -n "$GOOGLE_CLIENT_SECRET" ] && [ -n "$GOOGLE_REFRESH_TOKEN" ]; then
-  mkdir -p /root/.config/mcporter
-  node -e "
-    const fs = require('fs');
-    const cfg = {
-      mcpServers: {
-        'google-calendar': {
-          command: 'node',
-          args: ['/app/calendar-mcp.js'],
-          env: {
-            GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-            GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-            GOOGLE_REFRESH_TOKEN: process.env.GOOGLE_REFRESH_TOKEN
-          }
-        }
-      }
-    };
-    fs.writeFileSync('/root/.config/mcporter/config.json', JSON.stringify(cfg, null, 2));
-  "
+  mkdir -p /root/.openclaw/secrets
+  chmod 700 /root/.openclaw/secrets
+  cat > /root/.openclaw/secrets/google-oauth.json <<JSON
+{
+  "installed": {
+    "client_id": "$GOOGLE_CLIENT_ID",
+    "client_secret": "$GOOGLE_CLIENT_SECRET",
+    "redirect_uris": ["http://localhost"]
+  }
+}
+JSON
+  cat > /root/.openclaw/secrets/google-tokens.json <<JSON
+{
+  "refresh_token": "$GOOGLE_REFRESH_TOKEN",
+  "token_type": "Bearer",
+  "scope": "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/gmail.modify"
+}
+JSON
+  chmod 600 /root/.openclaw/secrets/google-oauth.json /root/.openclaw/secrets/google-tokens.json
 fi
 
 node -e "
