@@ -28,33 +28,26 @@ message.send.backend.auth.raw = "$GMAIL_APP_PASSWORD"
 TOML
 fi
 
-# Write Google OAuth credentials if provided
+# Write mcporter config for Google Calendar MCP server if Google credentials are provided
 if [ -n "$GOOGLE_CLIENT_ID" ] && [ -n "$GOOGLE_CLIENT_SECRET" ] && [ -n "$GOOGLE_REFRESH_TOKEN" ]; then
-  mkdir -p /root/.config/google-calendar-mcp
-
-  # Credentials file for MCP server (web app format)
-  cat > /root/.openclaw/google-oauth.keys.json <<GCREDS
-{
-  "web": {
-    "client_id": "$GOOGLE_CLIENT_ID",
-    "client_secret": "$GOOGLE_CLIENT_SECRET",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "redirect_uris": ["http://localhost:9823/callback"]
-  }
-}
-GCREDS
-
-  # Pre-populated token file with refresh token (expiry=1 forces refresh on start)
-  cat > /root/.config/google-calendar-mcp/tokens.json <<TOKENS
-{
-  "access_token": "",
-  "refresh_token": "$GOOGLE_REFRESH_TOKEN",
-  "scope": "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/drive",
-  "token_type": "Bearer",
-  "expiry_date": 1
-}
-TOKENS
+  mkdir -p /root/.config/mcporter
+  node -e "
+    const fs = require('fs');
+    const cfg = {
+      mcpServers: {
+        'google-calendar': {
+          command: 'node',
+          args: ['/app/calendar-mcp.js'],
+          env: {
+            GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+            GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+            GOOGLE_REFRESH_TOKEN: process.env.GOOGLE_REFRESH_TOKEN
+          }
+        }
+      }
+    };
+    fs.writeFileSync('/root/.config/mcporter/config.json', JSON.stringify(cfg, null, 2));
+  "
 fi
 
 node -e "
@@ -65,19 +58,6 @@ const telegramToken = process.env.TELEGRAM_API_KEY;
 if (telegramToken) {
   config.channels = config.channels || {};
   config.channels.telegram = { enabled: true, botToken: telegramToken };
-}
-
-const googleClientId = process.env.GOOGLE_CLIENT_ID;
-const googleRefreshToken = process.env.GOOGLE_REFRESH_TOKEN;
-if (googleClientId && googleRefreshToken) {
-  config.mcpServers = config.mcpServers || {};
-  config.mcpServers['google-calendar'] = {
-    command: 'google-calendar-mcp',
-    env: {
-      GOOGLE_OAUTH_CREDENTIALS: '/root/.openclaw/google-oauth.keys.json',
-      GOOGLE_CALENDAR_MCP_TOKEN_PATH: '/root/.config/google-calendar-mcp/tokens.json'
-    }
-  };
 }
 
 fs.writeFileSync('/root/.openclaw/openclaw.json', JSON.stringify(config, null, 2));
