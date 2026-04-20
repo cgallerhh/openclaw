@@ -14,6 +14,7 @@
   },
   "tools": {
     "profile": "full",
+    "allow": ["openclaw-google-workspace"],
     "web": {
       "search": {
         "enabled": true,
@@ -29,6 +30,23 @@
       },
       "fetch": {
         "enabled": true
+      }
+    }
+  },
+  "plugins": {
+    "allow": ["openclaw-google-workspace"],
+    "entries": {
+      "openclaw-google-workspace": {
+        "enabled": true,
+        "config": {
+          "credentialsPath": "./secrets/google-oauth.json",
+          "tokenPath": "./secrets/google-tokens.json",
+          "services": {
+            "gmail": { "enabled": true },
+            "calendar": { "enabled": true },
+            "drive": { "enabled": true, "readOnly": false }
+          }
+        }
       }
     }
   }
