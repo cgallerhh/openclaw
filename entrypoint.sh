@@ -72,10 +72,12 @@ const googleRefreshToken = process.env.GOOGLE_REFRESH_TOKEN;
 if (googleClientId && googleRefreshToken) {
   config.mcpServers = config.mcpServers || {};
   config.mcpServers['google-calendar'] = {
-    command: 'google-calendar-mcp',
+    command: 'node',
+    args: ['/app/calendar-mcp.js'],
     env: {
-      GOOGLE_OAUTH_CREDENTIALS: '/root/.openclaw/google-oauth.keys.json',
-      GOOGLE_CALENDAR_MCP_TOKEN_PATH: '/root/.config/google-calendar-mcp/tokens.json'
+      GOOGLE_CLIENT_ID: googleClientId,
+      GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || '',
+      GOOGLE_REFRESH_TOKEN: googleRefreshToken
     }
   };
 }
