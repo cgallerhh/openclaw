@@ -28,6 +28,22 @@ node -e "
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('/app/openclaw.config.json', 'utf8'));
 
+const model = process.env.OPENCLAW_MODEL;
+if (model) {
+  config.agents = config.agents || {};
+  config.agents.defaults = config.agents.defaults || {};
+  config.agents.defaults.model = config.agents.defaults.model || {};
+  config.agents.defaults.model.primary = model;
+}
+
+const webSearchEnabled = process.env.OPENCLAW_WEB_SEARCH_ENABLED;
+if (webSearchEnabled) {
+  config.tools = config.tools || {};
+  config.tools.web = config.tools.web || {};
+  config.tools.web.search = config.tools.web.search || {};
+  config.tools.web.search.enabled = webSearchEnabled === 'true';
+}
+
 const telegramToken = process.env.TELEGRAM_API_KEY;
 if (telegramToken) {
   config.channels = config.channels || {};

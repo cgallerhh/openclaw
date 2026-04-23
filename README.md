@@ -23,6 +23,8 @@ nano .env
 ```
 ```
 OPENAI_API_KEY=sk-...
+OPENCLAW_MODEL=openai/gpt-5.4-nano
+OPENCLAW_WEB_SEARCH_ENABLED=true
 TELEGRAM_API_KEY=<bot-token von @penclaw_ChG_BOT>
 TELEGRAM_CHAT_ID=<deine-telegram-id>
 ```
@@ -44,6 +46,8 @@ docker exec -it openclaw-openclaw-1 sh -c 'openclaw channels add --channel teleg
 | `HETZNER_HOST` | `89.167.14.159` |
 | `HETZNER_SSH_KEY` | Private Key (`/root/.ssh/github_actions`) |
 | `OPENAI_API_KEY` | OpenAI API Key |
+| `OPENCLAW_MODEL` | Optional, Standard: `openai/gpt-5.4-nano` |
+| `OPENCLAW_WEB_SEARCH_ENABLED` | Optional, Standard: `true`; auf `false` setzen, wenn Websuche Kosten verursacht |
 | `TELEGRAM_API_KEY` | Telegram Bot Token (@penclaw_ChG_BOT) |
 | `TELEGRAM_CHAT_ID` | Deine Telegram User ID |
 
@@ -58,7 +62,22 @@ docker compose up -d --build  # Nach Code-Änderungen
 
 ## Gateway
 
-Läuft auf `ws://127.0.0.1:18789` mit `gpt-4o-mini`.
+Läuft auf `ws://127.0.0.1:18789` mit `openai/gpt-5.4-nano`.
+
+## Kostensteuerung
+
+Das Standardmodell ist bewusst klein gesetzt, damit Idle- und Kurzdialoge günstig bleiben.
+Für bessere Qualität kann in `.env` temporär ein größeres Modell gesetzt werden:
+
+```bash
+OPENCLAW_MODEL=openai/gpt-5.4-mini
+```
+
+Wenn die Websuche unerwartet viele Kosten verursacht, kann sie ohne Codeänderung deaktiviert werden:
+
+```bash
+OPENCLAW_WEB_SEARCH_ENABLED=false
+```
 
 ## Bot
 
