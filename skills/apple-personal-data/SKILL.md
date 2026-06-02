@@ -40,11 +40,30 @@ specified one and the correct target is unclear.
 ## Apple Reminders
 
 ```bash
+remindctl status
 remindctl today --json
-remindctl list
-remindctl add --title "Buy milk" --due tomorrow
-remindctl complete <id>
+remindctl show upcoming --json
+remindctl list --json
+remindctl list "Personal" --json
+remindctl add "Buy milk" --due "2026-06-03 18:00" --json
+remindctl complete <id> --json
 ```
+
+Use `remindctl today --json` for today's reminders. Use `remindctl show <filter>
+--json` for other filters. Supported filters include `today`, `tomorrow`, `week`,
+`overdue`, `upcoming`, `open`, `completed` and `all`. Use `remindctl status`
+only to check macOS authorization.
+
+To create a reminder, pass its title as the argument directly after `add`.
+Convert relative dates from the user's request into a quoted local absolute
+value such as `"2026-06-03 18:00"` before calling `remindctl`. Add `--list
+"List Name"` only when the user named a list or the correct list is
+unambiguous.
+
+Do not run `remindctl add --help` unless the user explicitly asks for CLI help.
+Help output is not a successful reminder operation. Do not create, modify,
+complete or delete a reminder when the user only asks to inspect or test the
+connection.
 
 Use Apple Reminders only when the user wants the item synced into Apple's
 Reminders app. Use OpenClaw cron for chat alerts and scheduled agent work.
