@@ -15,6 +15,10 @@
   "tools": {
     "profile": "full",
     "allow": ["openclaw-google-workspace"],
+    "exec": {
+      "security": "allowlist",
+      "ask": "on-miss"
+    },
     "web": {
       "search": {
         "enabled": true,
