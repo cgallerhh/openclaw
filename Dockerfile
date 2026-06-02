@@ -6,6 +6,7 @@ RUN npm install -g openclaw@latest grammy @grammyjs/runner @grammyjs/transformer
 
 WORKDIR /app
 COPY openclaw.config.json .
+COPY skills ./skills
 
 EXPOSE 18789
 
