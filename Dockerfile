@@ -2,7 +2,7 @@ FROM node:24-alpine
 
 RUN apk add --no-cache git curl
 
-RUN npm install -g openclaw@latest grammy @grammyjs/runner @grammyjs/transformer-throttler @aws-sdk/client-bedrock @tensorfold/openclaw-google-workspace
+RUN npm install -g openclaw@2026.5.28 grammy @grammyjs/runner @grammyjs/transformer-throttler @aws-sdk/client-bedrock @tensorfold/openclaw-google-workspace
 
 WORKDIR /app
 COPY openclaw.config.json .
