@@ -20,6 +20,7 @@ Always use the exec tool with:
 - `host=node`
 - `node=Christians MacBook`
 - `security=allowlist`
+- `workdir=/Users/cgaller`
 
 ## Apple Calendar
 
