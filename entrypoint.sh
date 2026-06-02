@@ -28,6 +28,13 @@ node -e "
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('/app/openclaw.config.json', 'utf8'));
 
+const gatewayToken = process.env.OPENCLAW_GATEWAY_TOKEN;
+if (!gatewayToken) {
+  throw new Error('OPENCLAW_GATEWAY_TOKEN is required');
+}
+config.gateway = config.gateway || {};
+config.gateway.auth = { ...(config.gateway.auth || {}), mode: 'token', token: gatewayToken };
+
 const model = process.env.OPENCLAW_MODEL;
 if (model) {
   config.agents = config.agents || {};
@@ -55,6 +62,8 @@ fs.writeFileSync('/root/.openclaw/openclaw.json', JSON.stringify(config, null, 2
 
 # Write user context (location, timezone) for the agent system prompt
 mkdir -p /root/.openclaw/workspace
+mkdir -p /root/.openclaw/workspace/skills/apple-personal-data
+cp -R /app/skills/apple-personal-data/. /root/.openclaw/workspace/skills/apple-personal-data/
 cat > /root/.openclaw/workspace/user.md <<'MD'
 # User Context
 
